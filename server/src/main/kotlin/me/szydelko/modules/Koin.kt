@@ -1,6 +1,7 @@
 package me.szydelko.modules
 
 import io.ktor.server.application.*
+import me.szydelko.models.UserService
 import org.jetbrains.exposed.sql.Database
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
@@ -27,6 +28,10 @@ fun Application.configureKoin() {
                     driver = "org.h2.Driver",
                     password = "",
                 )
+            }
+
+            single {
+                UserService(get())
             }
 
         })
