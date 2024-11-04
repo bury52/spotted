@@ -1,0 +1,11 @@
+ktor:
+    application:
+        modules:
+            - me.szydelko.ApplicationKt.module
+    deployment:
+        port: 6070
+jwt:
+  domain: "https://jwt-provider-domain/"
+  audience: "jwt-audience"
+  realm: "ktor sample app"
+  secret: "sssssssssssssssss"
