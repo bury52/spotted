@@ -9,9 +9,14 @@ suspend fun <T> dbQuery(block: suspend () -> T): T =
 
 
 // null value
-infix fun <T> T?.notNull(block: T.() -> Unit): T? {
+infix fun <T> T?.notNull(block: (T) -> Unit): T? {
     if (this != null) block(this)
     return this
+}
+
+infix fun <T,R> T?.notNullR(block: (T) -> R): R? {
+    if (this != null) return block(this)
+    return null
 }
 
 infix fun <T> T?.isNull(block: () -> Unit): T? {

@@ -32,6 +32,7 @@ class UserService(database: Database) {
             Users.selectAll().where { Users.id eq id }.singleOrNull()
         }
     }
+
     suspend fun read(email: String): ResultRow? {
         return dbQuery {
             Users.selectAll().where { Users.email eq email }.singleOrNull()
@@ -41,9 +42,9 @@ class UserService(database: Database) {
     suspend fun update(id: Long, email: String?, password: String?) {
         dbQuery {
             Users.update({ Users.id eq id }) { dbUser ->
-                email notNull { dbUser[Users.email] = this }
+                email notNull { dbUser[Users.email] = it }
                 password notNull {
-                    dbUser[Users.password] = BCrypt.hashpw(password, BCrypt.gensalt())
+                    dbUser[Users.password] = BCrypt.hashpw(it, BCrypt.gensalt())
                 }
             }
         }
@@ -55,12 +56,8 @@ class UserService(database: Database) {
         }
     }
 
-    suspend fun verifyPassword(email: String, password: String): Boolean {
-        read(email) notNull {
-
-        }
-        return false
-    }
+    suspend fun verifyPassword(email: String, password: String): Boolean =
+        (read(email) notNullR { BCrypt.checkpw(password,it[Users.password]) }) ?: false
 
 
 }
