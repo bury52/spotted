@@ -6,7 +6,6 @@ import org.jetbrains.exposed.dao.id.LongIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.mindrot.jbcrypt.BCrypt
 
 class MarkersService(database: Database) {
     object Markers : LongIdTable() {
