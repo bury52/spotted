@@ -1,4 +1,4 @@
-package me.szydelko.util
+package me.szydelko.utils
 
 inline infix fun <T> T?.notNull(block: (T) -> Unit): T? {
     if (this != null) block(this)

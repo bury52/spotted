@@ -1,6 +1,6 @@
 package me.szydelko.models
 
-import me.szydelko.util.notNull
+import me.szydelko.utils.notNull
 import org.jetbrains.exposed.dao.id.LongIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

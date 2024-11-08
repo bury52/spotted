@@ -1,4 +1,4 @@
-package me.szydelko.util
+package me.szydelko.utils
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -8,6 +8,8 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlin.enums.EnumEntries
 import kotlin.reflect.KProperty1
+
+fun bitN(n: Int): Long = 1L shl n
 
 inline fun <reified T : Enum<T>> toBitmaskEnum(flags: Set<T>, bit: KProperty1<T, Long>): Long {
     return flags.fold(0) { acc, flag -> acc or bit.get(flag) }

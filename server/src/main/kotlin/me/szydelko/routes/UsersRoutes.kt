@@ -14,7 +14,7 @@ import me.szydelko.DTO.DTOUpdate
 import me.szydelko.DTO.DTOUser
 import me.szydelko.models.UserService
 import me.szydelko.modules.JwtConfig
-import me.szydelko.util.nullBlock
+import me.szydelko.utils.nullBlock
 import org.koin.ktor.ext.inject
 import java.util.*
 
