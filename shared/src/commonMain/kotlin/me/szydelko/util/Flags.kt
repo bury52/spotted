@@ -9,38 +9,38 @@ import kotlinx.serialization.encoding.Encoder
 import kotlin.enums.EnumEntries
 import kotlin.reflect.KProperty1
 
-inline fun <reified T : Enum<T>> toBitmask(flags: Set<T>, bit: KProperty1<T, Int>): Int {
+inline fun <reified T : Enum<T>> toBitmaskEnum(flags: Set<T>, bit: KProperty1<T, Long>): Long {
     return flags.fold(0) { acc, flag -> acc or bit.get(flag) }
 }
 
-inline fun <reified T : Enum<T>> fromBitmask(mask: Int, entries: EnumEntries<T>, bit: KProperty1<T, Int>): Set<T> {
-    return entries.filter { flag -> (mask and bit.get(flag)) != 0 }.toSet()
+inline fun <reified T : Enum<T>> fromBitmaskEnum(mask: Long, entries: EnumEntries<T>, bit: KProperty1<T, Long>): Set<T> {
+    return entries.filter { flag -> (mask and bit.get(flag)) != 0L }.toSet()
 }
 
-inline fun <reified T : Enum<T>> toBitmask(flags: Set<T>, entries: EnumEntries<T>): Int {
-    return flags.fold(0) { acc, flag -> acc or (1 shl entries.indexOf(flag)) }
+inline fun <reified T : Enum<T>> toBitmaskEnum(flags: Set<T>, entries: EnumEntries<T>): Long {
+    return flags.fold(0) { acc, flag -> acc or (1L shl entries.indexOf(flag)) }
 }
 
-inline fun <reified T : Enum<T>> fromBitmask(mask: Int, entries: EnumEntries<T>): Set<T> {
-    return entries.withIndex().filter { (index, flag) -> (mask and (1 shl index)) != 0 }.map { (index, flag) -> flag }
+inline fun <reified T : Enum<T>> fromBitmaskEnum(mask: Long, entries: EnumEntries<T>): Set<T> {
+    return entries.withIndex().filter { (index, flag) -> (mask and (1L shl index)) != 0L }.map { (index, flag) -> flag }
         .toSet()
 }
 
 interface BitMask<T> {
-    fun toBitmask(flags: T): Int
-    fun fromBitmask(mask: Int): T
+    fun toBitmask(flags: T): Long
+    fun fromBitmask(mask: Long): T
 }
 
 abstract class BitMaskSerializer<T> : KSerializer<T>, BitMask<T> {
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("BitMask", PrimitiveKind.INT)
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("BitMask", PrimitiveKind.LONG)
 
     override fun deserialize(decoder: Decoder): T {
-        val bitmask = decoder.decodeInt()
+        val bitmask = decoder.decodeLong()
         return fromBitmask(bitmask)
     }
 
     override fun serialize(encoder: Encoder, value: T) {
         val bitmask = toBitmask(value)
-        encoder.encodeInt(bitmask)
+        encoder.encodeLong(bitmask)
     }
 }

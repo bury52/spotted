@@ -1,6 +1,9 @@
 package me.szydelko
 
 import io.ktor.server.application.*
+import kotlinx.serialization.json.Json
+import me.szydelko.DTO.DTOError
+import me.szydelko.DTO.ErrorFlag
 import me.szydelko.modules.*
 
 fun main(args: Array<String>) {
