@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.nav)
 }
 
 kotlin {
@@ -33,6 +34,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.nav)
+            implementation(libs.ktor.serialization.kotlinx.json)
             implementation(projects.shared)
         }
     }

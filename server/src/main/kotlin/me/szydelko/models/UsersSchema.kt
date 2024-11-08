@@ -1,5 +1,6 @@
 package me.szydelko.models
 
+import me.szydelko.util.notNull
 import org.jetbrains.exposed.dao.id.LongIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -8,7 +9,7 @@ import org.mindrot.jbcrypt.BCrypt
 
 class UserService(database: Database) {
     object Users : LongIdTable() {
-        val email = varchar("email", 255)
+        val email = varchar("email", 255).uniqueIndex()
         val password = varchar("password", 255)
     }
 
@@ -52,12 +53,19 @@ class UserService(database: Database) {
 
     suspend fun delete(id: Long) {
         dbQuery {
-            Users.deleteWhere { Users.id.eq(id) }
+            Users.deleteWhere { Users.id eq id }
         }
     }
 
-    suspend fun verifyPassword(email: String, password: String): Boolean =
-        (read(email) notNullR { BCrypt.checkpw(password,it[Users.password]) }) ?: false
+    /**
+     * @return first = is verified, second = id
+     */
+    suspend fun verifyPassword(email: String, password: String): Pair<Boolean, Long> {
+        read(email) notNull {
+            return Pair(BCrypt.checkpw(password, it[Users.password]), it[Users.id].value)
+        }
+        return Pair(false, 0)
+    }
 
 
 }

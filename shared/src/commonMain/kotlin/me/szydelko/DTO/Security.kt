@@ -8,3 +8,8 @@ data class DTORegister(val email: String,val password: String)
 @Serializable
 data class DTOLogin(val email: String,val password: String)
 
+@Serializable
+data class DTOUpdate(val email: String?,val password: String?)
+
+@Serializable
+data class DTOUser(val email: String)
