@@ -24,6 +24,9 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.play.services.maps)
+            implementation(libs.maps.compose)
+            implementation(libs.accompanist.permissions)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -37,6 +40,7 @@ kotlin {
             implementation(libs.androidx.nav)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(projects.shared)
+            implementation(compose.material3)
         }
     }
 }
@@ -51,6 +55,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        manifestPlaceholders["MAPS_API_KEY"] = findProperty("MAPS_API_KEY") as String? ?: ""
     }
     packaging {
         resources {
@@ -66,9 +71,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
+    implementation(libs.coil.compose)
     debugImplementation(compose.uiTooling)
 }
 
